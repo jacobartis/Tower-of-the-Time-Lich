@@ -1,0 +1,25 @@
+[gd_scene load_steps=6 format=3 uid="uid://b63qf454l5rr4"]
+
+[ext_resource type="PackedScene" uid="uid://beenjcjmo5nbm" path="res://scenes/player/player.tscn" id="1_uib1c"]
+[ext_resource type="PackedScene" uid="uid://bfehmhlupl3b6" path="res://scenes/enemies/turret.tscn" id="2_uh7w5"]
+
+[sub_resource type="Gradient" id="Gradient_ym4ci"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ug6u7"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_sbkis"]
+width = 1024
+height = 1024
+color_ramp = SubResource("Gradient_ym4ci")
+noise = SubResource("FastNoiseLite_ug6u7")
+
+[node name="World" type="Node2D" groups=["world"]]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = SubResource("NoiseTexture2D_sbkis")
+
+[node name="Player" parent="." instance=ExtResource("1_uib1c")]
+
+[node name="TurretBase" parent="." instance=ExtResource("2_uh7w5")]
+position = Vector2(397, 0)
