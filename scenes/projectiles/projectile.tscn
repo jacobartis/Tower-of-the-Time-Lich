@@ -1,0 +1,43 @@
+[gd_scene load_steps=9 format=3 uid="uid://bdg2ep4oaaovp"]
+
+[ext_resource type="Script" path="res://scripts/projectiles/projectile.gd" id="1_7wd1k"]
+[ext_resource type="Texture2D" uid="uid://dydrn18skchfq" path="res://icon.svg" id="1_i0yd4"]
+[ext_resource type="Script" path="res://scripts/entity components/hit_box_component.gd" id="2_75boc"]
+[ext_resource type="Script" path="res://scripts/attacks/attack_component.gd" id="4_pqu08"]
+[ext_resource type="Script" path="res://scripts/attacks/attack_info.gd" id="5_f2jcm"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_miww4"]
+radius = 16.7631
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rsyrq"]
+radius = 27.074
+
+[sub_resource type="Resource" id="Resource_kxivi"]
+script = ExtResource("5_f2jcm")
+damage = 5.0
+
+[node name="Projectile" type="CharacterBody2D"]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_7wd1k")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_miww4")
+
+[node name="HitBoxComponent" type="Area2D" parent="."]
+script = ExtResource("2_75boc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBoxComponent"]
+shape = SubResource("CircleShape2D_rsyrq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+scale = Vector2(0.390625, 0.390625)
+texture = ExtResource("1_i0yd4")
+
+[node name="AttackComponent" type="Node" parent="."]
+script = ExtResource("4_pqu08")
+info = SubResource("Resource_kxivi")
+
+[connection signal="hurtbox_hit" from="HitBoxComponent" to="." method="_on_hit_box_component_hurtbox_hit"]
+[connection signal="hurtbox_hit" from="HitBoxComponent" to="AttackComponent" method="apply_hit"]
