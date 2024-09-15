@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bfehmhlupl3b6"]
+[gd_scene load_steps=19 format=3 uid="uid://bfehmhlupl3b6"]
 
 [ext_resource type="Script" path="res://scripts/enemies/turret.gd" id="1_7f3v3"]
 [ext_resource type="Script" path="res://scripts/entity components/hurtbox_component.gd" id="1_kkc2u"]
@@ -6,12 +6,123 @@
 [ext_resource type="Script" path="res://scripts/entity components/hit_handler_component.gd" id="4_46gxl"]
 [ext_resource type="Script" path="res://scripts/entity components/health_component.gd" id="5_g3i5k"]
 [ext_resource type="Script" path="res://scripts/entity components/health_bar_component.gd" id="6_r7cvk"]
+[ext_resource type="AudioStream" uid="uid://ceybf4ry5w258" path="res://audio/sfx/metal-hit-90-200426.mp3" id="7_2qp6n"]
+[ext_resource type="Script" path="res://scripts/audio/pitch_audio_player_2d.gd" id="8_xif1s"]
+
+[sub_resource type="Shader" id="Shader_f174b"]
+code = "shader_type canvas_item;
+
+uniform bool active;
+uniform float freq;
+uniform vec3 flash_color: source_color = vec3(1.0);
+
+void fragment() {
+	if (active){
+		COLOR = vec4(mix(COLOR.rgb,flash_color,sin(TIME*freq)/2.0+.5),COLOR.a);
+	}
+}
+
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bfril"]
+shader = SubResource("Shader_f174b")
+shader_parameter/active = false
+shader_parameter/freq = 25.0
+shader_parameter/flash_color = Color(1, 0, 0, 1)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jfw1l"]
 size = Vector2(90, 92)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mvl2d"]
 size = Vector2(94, 96)
+
+[sub_resource type="Animation" id="Animation_qr5ay"]
+resource_name = "Hit"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:material:shader_parameter/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_8x62b"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("..:material:shader_parameter/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jk7as"]
+_data = {
+"Hit": SubResource("Animation_qr5ay"),
+"RESET": SubResource("Animation_8x62b")
+}
+
+[sub_resource type="Animation" id="Animation_i5ckd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("HurtBoxComponent/CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:material:shader_parameter/active")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_jor1b"]
 resource_name = "death"
@@ -56,32 +167,17 @@ tracks/2/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
-
-[sub_resource type="Animation" id="Animation_i5ckd"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("CollisionShape2D:disabled")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("HurtBoxComponent/CollisionShape2D:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:modulate")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
+"values": [true]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_lnati"]
@@ -91,6 +187,7 @@ _data = {
 }
 
 [node name="TurretBase" type="StaticBody2D"]
+material = SubResource("ShaderMaterial_bfril")
 script = ExtResource("1_7f3v3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -103,13 +200,16 @@ script = ExtResource("1_kkc2u")
 shape = SubResource("RectangleShape2D_mvl2d")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+use_parent_material = true
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("2_ruug7")
 
 [node name="Turret" type="Node2D" parent="."]
 unique_name_in_owner = true
+use_parent_material = true
 
 [node name="Sprite2D" type="Sprite2D" parent="Turret"]
+use_parent_material = true
 position = Vector2(38, 0)
 scale = Vector2(0.765625, 0.265625)
 texture = ExtResource("2_ruug7")
@@ -128,7 +228,13 @@ health_component = NodePath("../HealthComponent")
 [node name="HealthComponent" type="Node" parent="."]
 script = ExtResource("5_g3i5k")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="HitAnim" type="AnimationPlayer" parent="."]
+root_node = NodePath("../DeathAnim")
+libraries = {
+"": SubResource("AnimationLibrary_jk7as")
+}
+
+[node name="DeathAnim" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_lnati")
 }
@@ -141,5 +247,12 @@ offset_bottom = 75.0
 script = ExtResource("6_r7cvk")
 health_component = NodePath("../HealthComponent")
 
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_2qp6n")
+pitch_scale = 0.75
+script = ExtResource("8_xif1s")
+
 [connection signal="hit" from="HurtBoxComponent" to="HitHandlerComponent" method="handle_hit"]
-[connection signal="dead" from="HealthComponent" to="AnimationPlayer" method="play" binds= ["death"]]
+[connection signal="hit_taken" from="HitHandlerComponent" to="AudioStreamPlayer2D" method="play_pitched"]
+[connection signal="hit_taken" from="HitHandlerComponent" to="HitAnim" method="play" binds= ["Hit"]]
+[connection signal="dead" from="HealthComponent" to="DeathAnim" method="play" binds= ["death"]]
