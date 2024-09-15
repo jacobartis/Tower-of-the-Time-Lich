@@ -9,7 +9,7 @@ func _process(delta):
 	if timer.is_stopped():
 		attack()
 
-func attack():
+func attack(): 
 	var inst = ENEMY_PROJECTILE.instantiate()
 	inst.global_transform = %ProjSpawn.global_transform
 	inst.velocity = Vector2.RIGHT.rotated(inst.rotation)*200

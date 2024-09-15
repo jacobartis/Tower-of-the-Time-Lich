@@ -1,9 +1,12 @@
 extends Node
 class_name HitHandlerComponent
 
+signal hit_taken()
+
 @export var health_component:HealthComponent
 
 func handle_hit(hit:AttackInfo):
 	print("Hit")
 	if hit.damage:
 		health_component.take_damage(hit.damage)
+	hit_taken.emit()
