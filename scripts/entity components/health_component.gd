@@ -13,6 +13,7 @@ var health:float = 0:
 	set(val):
 		health = clamp(val,0,max_health)
 		health_update.emit(health)
+		print(health)
 		if health == 0:
 			dead.emit()
 
