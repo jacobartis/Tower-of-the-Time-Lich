@@ -4,6 +4,11 @@ extends CharacterBody2D
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 
+@export var interaction_area:InteractionDetectionArea
+
+func _process(delta):
+	if Input.is_action_just_pressed("player_interact"):
+		interaction_area.interact()
 
 func _physics_process(delta):
 	

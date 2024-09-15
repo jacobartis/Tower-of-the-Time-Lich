@@ -4,6 +4,7 @@ var collision_layers: Dictionary = {
 	"Wall":1,
 	"Player":2,
 	"Enemy":3,
+	"Interactable":4,
 }
 
 func get_collision_layer(l_name:String):
