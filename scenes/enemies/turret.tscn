@@ -1,8 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bfehmhlupl3b6"]
+[gd_scene load_steps=12 format=3 uid="uid://bfehmhlupl3b6"]
 
-[ext_resource type="Script" path="res://scenes/enemies/turret.gd" id="1_fwfpf"]
+[ext_resource type="Script" path="res://scripts/enemies/turret.gd" id="1_7f3v3"]
 [ext_resource type="Script" path="res://scripts/entity components/hurtbox_component.gd" id="1_kkc2u"]
 [ext_resource type="Texture2D" uid="uid://dydrn18skchfq" path="res://icon.svg" id="2_ruug7"]
+[ext_resource type="Script" path="res://scripts/entity components/hit_handler_component.gd" id="4_46gxl"]
+[ext_resource type="Script" path="res://scripts/entity components/health_component.gd" id="5_g3i5k"]
+[ext_resource type="Script" path="res://scripts/entity components/health_bar_component.gd" id="6_r7cvk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jfw1l"]
 size = Vector2(90, 92)
@@ -10,8 +13,85 @@ size = Vector2(90, 92)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mvl2d"]
 size = Vector2(94, 96)
 
+[sub_resource type="Animation" id="Animation_jor1b"]
+resource_name = "death"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [false],
+"method": &"set_process"
+}, {
+"args": [],
+"method": &"queue_free"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_i5ckd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CollisionShape2D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lnati"]
+_data = {
+"RESET": SubResource("Animation_i5ckd"),
+"death": SubResource("Animation_jor1b")
+}
+
 [node name="TurretBase" type="StaticBody2D"]
-script = ExtResource("1_fwfpf")
+script = ExtResource("1_7f3v3")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_jfw1l")
@@ -40,3 +120,26 @@ position = Vector2(87, 0)
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
+
+[node name="HitHandlerComponent" type="Node" parent="." node_paths=PackedStringArray("health_component")]
+script = ExtResource("4_46gxl")
+health_component = NodePath("../HealthComponent")
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("5_g3i5k")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_lnati")
+}
+
+[node name="HealthBarComponent" type="ProgressBar" parent="." node_paths=PackedStringArray("health_component")]
+offset_left = -54.0
+offset_top = 48.0
+offset_right = 58.0
+offset_bottom = 75.0
+script = ExtResource("6_r7cvk")
+health_component = NodePath("../HealthComponent")
+
+[connection signal="hit" from="HurtBoxComponent" to="HitHandlerComponent" method="handle_hit"]
+[connection signal="dead" from="HealthComponent" to="AnimationPlayer" method="play" binds= ["death"]]
