@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://beenjcjmo5nbm"]
+[gd_scene load_steps=17 format=3 uid="uid://beenjcjmo5nbm"]
 
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="1_aj3wt"]
 [ext_resource type="Shader" path="res://shaders/hit_shader.gdshader" id="1_u2i0y"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scripts/entity components/health_component.gd" id="4_nda1r"]
 [ext_resource type="Script" path="res://scripts/player/weapon_holder.gd" id="6_52hcq"]
 [ext_resource type="PackedScene" uid="uid://dqyuvkn24rt4d" path="res://scenes/weapons/weapon.tscn" id="7_h1lr7"]
+[ext_resource type="Script" path="res://scripts/player/interaction_dtection_area.gd" id="9_5q5pa"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c038n"]
 shader = ExtResource("1_u2i0y")
@@ -20,6 +21,21 @@ size = Vector2(48, 46)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i35ml"]
 size = Vector2(58, 62)
+
+[sub_resource type="Animation" id="Animation_x5d4x"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [null]
+}
 
 [sub_resource type="Animation" id="Animation_bo6fp"]
 resource_name = "hit"
@@ -37,31 +53,20 @@ tracks/0/keys = {
 "values": [true, null]
 }
 
-[sub_resource type="Animation" id="Animation_x5d4x"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:material:shader_parameter/active")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [null]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_k1s88"]
 _data = {
 "RESET": SubResource("Animation_x5d4x"),
 "hit": SubResource("Animation_bo6fp")
 }
 
-[node name="Player" type="CharacterBody2D" groups=["player"]]
+[sub_resource type="CircleShape2D" id="CircleShape2D_ta5md"]
+radius = 156.051
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("interaction_area") groups=["player"]]
 material = SubResource("ShaderMaterial_c038n")
 motion_mode = 1
 script = ExtResource("1_aj3wt")
+interaction_area = NodePath("InteractDetectionArea")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_2ctgj")
@@ -97,6 +102,14 @@ script = ExtResource("6_52hcq")
 libraries = {
 "": SubResource("AnimationLibrary_k1s88")
 }
+
+[node name="InteractDetectionArea" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 8
+script = ExtResource("9_5q5pa")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractDetectionArea"]
+shape = SubResource("CircleShape2D_ta5md")
 
 [connection signal="hit" from="HurtboxComponent" to="HitHandlerComponent" method="handle_hit"]
 [connection signal="hit_taken" from="HitHandlerComponent" to="AnimationPlayer" method="play" binds= ["hit"]]
