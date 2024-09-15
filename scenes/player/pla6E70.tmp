@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=3 uid="uid://beenjcjmo5nbm"]
 
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="1_aj3wt"]
-[ext_resource type="Shader" path="res://shaders/hit_shader.gdshader" id="1_u2i0y"]
+[ext_resource type="Shader" path="res://shaders/hit_shader.gdshader" id="1_hrxgb"]
 [ext_resource type="Script" path="res://scripts/entity components/hurtbox_component.gd" id="2_1q10r"]
 [ext_resource type="Texture2D" uid="uid://dydrn18skchfq" path="res://icon.svg" id="2_bp17w"]
 [ext_resource type="Script" path="res://scripts/entity components/hit_handler_component.gd" id="3_q3ky6"]
@@ -9,9 +9,9 @@
 [ext_resource type="Script" path="res://scripts/player/weapon_holder.gd" id="6_52hcq"]
 [ext_resource type="PackedScene" uid="uid://dqyuvkn24rt4d" path="res://scenes/weapons/weapon.tscn" id="7_h1lr7"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_c038n"]
-shader = ExtResource("1_u2i0y")
-shader_parameter/active = null
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_27e31"]
+shader = ExtResource("1_hrxgb")
+shader_parameter/active = false
 shader_parameter/freq = 25.0
 shader_parameter/flash_color = Color(1, 0, 0, 1)
 
@@ -21,9 +21,8 @@ size = Vector2(48, 46)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i35ml"]
 size = Vector2(58, 62)
 
-[sub_resource type="Animation" id="Animation_bo6fp"]
+[sub_resource type="Animation" id="Animation_ddd8w"]
 resource_name = "hit"
-length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -31,13 +30,13 @@ tracks/0/path = NodePath(".:material:shader_parameter/active")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
+"times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [true, null]
+"values": [true, false]
 }
 
-[sub_resource type="Animation" id="Animation_x5d4x"]
+[sub_resource type="Animation" id="Animation_h5icx"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -49,17 +48,17 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [null]
+"values": [false]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_k1s88"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tq7q0"]
 _data = {
-"RESET": SubResource("Animation_x5d4x"),
-"hit": SubResource("Animation_bo6fp")
+"RESET": SubResource("Animation_h5icx"),
+"hit": SubResource("Animation_ddd8w")
 }
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
-material = SubResource("ShaderMaterial_c038n")
+material = SubResource("ShaderMaterial_27e31")
 motion_mode = 1
 script = ExtResource("1_aj3wt")
 
@@ -87,6 +86,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("2_bp17w")
 
 [node name="WeaponHolder" type="Node2D" parent="."]
+use_parent_material = true
 script = ExtResource("6_52hcq")
 
 [node name="Weapon" parent="WeaponHolder" instance=ExtResource("7_h1lr7")]
@@ -95,7 +95,7 @@ script = ExtResource("6_52hcq")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_k1s88")
+"": SubResource("AnimationLibrary_tq7q0")
 }
 
 [connection signal="hit" from="HurtboxComponent" to="HitHandlerComponent" method="handle_hit"]
