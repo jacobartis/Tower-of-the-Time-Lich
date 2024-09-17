@@ -11,6 +11,7 @@ func _process(delta):
 
 func attack(): 
 	var inst = ENEMY_PROJECTILE.instantiate()
+	inst.attack_component.info.damage = 50
 	inst.global_transform = %ProjSpawn.global_transform
 	inst.velocity = Vector2.RIGHT.rotated(inst.rotation)*200
 	get_tree().get_first_node_in_group("world").add_child(inst)
