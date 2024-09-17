@@ -25,6 +25,7 @@ void fragment() {
 "
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bfril"]
+resource_local_to_scene = true
 shader = SubResource("Shader_f174b")
 shader_parameter/active = false
 shader_parameter/freq = 25.0

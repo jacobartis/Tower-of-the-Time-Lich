@@ -216,6 +216,10 @@ script = ExtResource("9_5q5pa")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractDetectionArea"]
 shape = SubResource("CircleShape2D_ta5md")
 
+[node name="DashTimer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="hit" from="HurtboxComponent" to="HitHandlerComponent" method="handle_hit"]
 [connection signal="hit_taken" from="HitHandlerComponent" to="AnimationPlayer" method="play" binds= ["hit"]]
 [connection signal="dead" from="HealthComponent" to="AnimationPlayer" method="play" binds= ["die"]]
+[connection signal="timeout" from="DashTimer" to="." method="end_dash"]

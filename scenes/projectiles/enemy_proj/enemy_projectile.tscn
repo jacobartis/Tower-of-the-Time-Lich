@@ -1,0 +1,43 @@
+[gd_scene load_steps=9 format=3 uid="uid://bdg2ep4oaaovp"]
+
+[ext_resource type="Script" path="res://scripts/projectiles/projectile.gd" id="1_peani"]
+[ext_resource type="Script" path="res://scripts/entity components/hit_box_component.gd" id="2_er72b"]
+[ext_resource type="Texture2D" uid="uid://wlgigie64b7g" path="res://sprites/projectiles/ClockHand.png" id="3_l8t0f"]
+[ext_resource type="Script" path="res://scripts/attacks/attack_component.gd" id="4_3jush"]
+[ext_resource type="Script" path="res://scripts/attacks/attack_info.gd" id="5_ynkr1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wa6e4"]
+size = Vector2(4, 54)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ynalv"]
+size = Vector2(8, 60)
+
+[sub_resource type="Resource" id="Resource_kxivi"]
+script = ExtResource("5_ynkr1")
+damage = 5.0
+
+[node name="Projectile" type="CharacterBody2D" node_paths=PackedStringArray("attack_component")]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_peani")
+attack_component = NodePath("AttackComponent")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_wa6e4")
+
+[node name="HitBoxComponent" type="Area2D" parent="."]
+script = ExtResource("2_er72b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBoxComponent"]
+shape = SubResource("RectangleShape2D_ynalv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+texture = ExtResource("3_l8t0f")
+
+[node name="AttackComponent" type="Node" parent="."]
+script = ExtResource("4_3jush")
+info = SubResource("Resource_kxivi")
+
+[connection signal="hurtbox_hit" from="HitBoxComponent" to="." method="_on_hit_box_component_hurtbox_hit"]
+[connection signal="hurtbox_hit" from="HitBoxComponent" to="AttackComponent" method="apply_hit"]
