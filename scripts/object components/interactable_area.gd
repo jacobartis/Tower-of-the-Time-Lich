@@ -5,7 +5,7 @@ signal interacted()
 signal highlighted()
 signal unhighlighted()
 
-@export var highlight_shader:ShaderMaterial
+@export var highlight_shader:ShaderMaterial = preload("res://shaders/highlight_material.tres")
 
 var highlight: bool = true:
 	set(val):
