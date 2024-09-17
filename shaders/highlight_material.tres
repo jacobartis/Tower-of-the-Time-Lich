@@ -1,0 +1,19 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://fs4f3vnn3dxs"]
+
+[ext_resource type="Shader" path="res://shaders/highlight.gdshader" id="1_3801k"]
+
+[resource]
+shader = ExtResource("1_3801k")
+shader_parameter/enabled = false
+shader_parameter/pulsing = true
+shader_parameter/thickness = 10.0
+shader_parameter/thickness_min = 4.0
+shader_parameter/speed = 3.0
+shader_parameter/ring_count = 16
+shader_parameter/ring_offset = null
+shader_parameter/outline_color = Color(1, 1, 1, 1)
+shader_parameter/border_clipping_fix = true
+shader_parameter/aspect_ratio = 1.0
+shader_parameter/square_border = false
+shader_parameter/offset = null
+shader_parameter/max_or_add = false
