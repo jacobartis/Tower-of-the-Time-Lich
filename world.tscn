@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://b63qf454l5rr4"]
+[gd_scene load_steps=8 format=3 uid="uid://b63qf454l5rr4"]
 
 [ext_resource type="PackedScene" uid="uid://beenjcjmo5nbm" path="res://scenes/player/player.tscn" id="1_uib1c"]
 [ext_resource type="PackedScene" uid="uid://bfehmhlupl3b6" path="res://scenes/enemies/turret.tscn" id="2_uh7w5"]
 [ext_resource type="PackedScene" uid="uid://bofsgphrertu3" path="res://scenes/objects/room_starter.tscn" id="3_ynx84"]
+[ext_resource type="PackedScene" uid="uid://cuwewaryfuy5p" path="res://scenes/UI/timer_display.tscn" id="4_jlx3h"]
 
 [sub_resource type="Gradient" id="Gradient_ym4ci"]
 
@@ -27,3 +28,8 @@ position = Vector2(397, 0)
 
 [node name="RoomStarter" parent="." instance=ExtResource("3_ynx84")]
 position = Vector2(-243, -81)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TimerDisplay" parent="CanvasLayer" instance=ExtResource("4_jlx3h")]
+visible = false
