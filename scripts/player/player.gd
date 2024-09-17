@@ -5,10 +5,15 @@ const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 
 @export var interaction_area:InteractionDetectionArea
+@export var weapon_holder:Node2D
 
 func _process(delta):
 	if Input.is_action_just_pressed("player_interact"):
 		interaction_area.interact()
+	if Input.is_action_pressed("player_prim_fire"):
+		weapon_holder.attack()
+	if Input.is_action_just_pressed("player_alt_fire"):
+		weapon_holder.alt_attack()
 
 func _physics_process(delta):
 	
