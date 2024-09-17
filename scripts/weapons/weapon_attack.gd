@@ -1,7 +1,7 @@
 extends Node
 class_name WeaponAttack
 
-@export var projectile: PackedScene = preload("res://scenes/projectiles/player_projectile.tscn")
+@export var projectile: PackedScene = preload("res://scenes/projectiles/player_proj/player_projectile.tscn")
 @export var proj_spawn: Node2D
 @export var weapon: Weapon
 

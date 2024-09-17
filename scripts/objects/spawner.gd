@@ -12,7 +12,7 @@ func monster_dead():
 	monster_killed.emit()
 
 func spawn_wave(wave:int):
-	if wave<0 or spawns.size()<wave:
+	if wave<0 or spawns.size()<=wave:
 		print("invalid wave ",wave," ",spawns.size())
 		return
 	if !spawns[wave]: 
