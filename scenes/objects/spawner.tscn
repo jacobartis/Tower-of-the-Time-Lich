@@ -1,3 +1,8 @@
-[gd_scene format=3 uid="uid://bwqxww3rasrpq"]
+[gd_scene load_steps=3 format=3 uid="uid://bwqxww3rasrpq"]
+
+[ext_resource type="Script" path="res://scripts/objects/spawner.gd" id="1_ohfu6"]
+[ext_resource type="PackedScene" uid="uid://bfehmhlupl3b6" path="res://scenes/enemies/turret.tscn" id="2_iky7o"]
 
 [node name="Spawner" type="Node2D"]
+script = ExtResource("1_ohfu6")
+spawns = Array[PackedScene]([ExtResource("2_iky7o"), null, ExtResource("2_iky7o"), null, ExtResource("2_iky7o")])

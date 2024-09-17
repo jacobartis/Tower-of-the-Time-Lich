@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://b63qf454l5rr4"]
+[gd_scene load_steps=10 format=3 uid="uid://b63qf454l5rr4"]
 
 [ext_resource type="PackedScene" uid="uid://beenjcjmo5nbm" path="res://scenes/player/player.tscn" id="1_uib1c"]
 [ext_resource type="PackedScene" uid="uid://bfehmhlupl3b6" path="res://scenes/enemies/turret.tscn" id="2_uh7w5"]
 [ext_resource type="PackedScene" uid="uid://bofsgphrertu3" path="res://scenes/objects/room_starter.tscn" id="3_ynx84"]
 [ext_resource type="PackedScene" uid="uid://cuwewaryfuy5p" path="res://scenes/UI/timer_display.tscn" id="4_jlx3h"]
+[ext_resource type="PackedScene" uid="uid://bwqxww3rasrpq" path="res://scenes/objects/spawner.tscn" id="5_umcqj"]
+[ext_resource type="PackedScene" uid="uid://2vox70dxmdsg" path="res://scenes/objects/room_manager.tscn" id="5_y7h3v"]
 
 [sub_resource type="Gradient" id="Gradient_ym4ci"]
 
@@ -23,9 +25,6 @@ texture = SubResource("NoiseTexture2D_sbkis")
 
 [node name="Player" parent="." instance=ExtResource("1_uib1c")]
 
-[node name="TurretBase" parent="." instance=ExtResource("2_uh7w5")]
-position = Vector2(397, 0)
-
 [node name="RoomStarter" parent="." instance=ExtResource("3_ynx84")]
 position = Vector2(-243, -81)
 
@@ -33,3 +32,17 @@ position = Vector2(-243, -81)
 
 [node name="TimerDisplay" parent="CanvasLayer" instance=ExtResource("4_jlx3h")]
 visible = false
+
+[node name="RoomManager" parent="." instance=ExtResource("5_y7h3v")]
+waves = 5
+
+[node name="Spawner" parent="RoomManager" instance=ExtResource("5_umcqj")]
+position = Vector2(-266, 91)
+
+[node name="Spawner2" parent="RoomManager" instance=ExtResource("5_umcqj")]
+position = Vector2(146, -233)
+spawns = Array[PackedScene]([ExtResource("2_uh7w5"), ExtResource("2_uh7w5"), ExtResource("2_uh7w5"), ExtResource("2_uh7w5"), ExtResource("2_uh7w5")])
+
+[node name="Spawner3" parent="RoomManager" instance=ExtResource("5_umcqj")]
+position = Vector2(235, 99)
+spawns = Array[PackedScene]([null, null, null, ExtResource("2_uh7w5"), ExtResource("2_uh7w5")])
