@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Tower of The Time Litch"
+config/name="Tower of The Time Lich"
 run/main_scene="res://world.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
@@ -22,6 +22,10 @@ ProjectInfo="*res://scripts/preloads/project_info_preload.gd"
 [dotnet]
 
 project/assembly_name="Tower of The Time Litch"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/kanban_tasks/plugin.cfg")
 
 [input]
 

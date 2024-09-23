@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/entity components/hit_box_component.gd" id="2_jtxqe"]
 [ext_resource type="Texture2D" uid="uid://wlgigie64b7g" path="res://sprites/projectiles/ClockHand.png" id="3_ikmr4"]
 [ext_resource type="Script" path="res://scripts/attacks/attack_component.gd" id="4_2r3uj"]
-[ext_resource type="Script" path="res://scripts/attacks/attack_info.gd" id="5_cq3l5"]
+[ext_resource type="Script" path="res://scripts/attacks/attack_stats.gd" id="5_cq3l5"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wa6e4"]
 size = Vector2(4, 54)

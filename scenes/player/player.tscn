@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://beenjcjmo5nbm"]
+[gd_scene load_steps=23 format=3 uid="uid://beenjcjmo5nbm"]
 
 [ext_resource type="Script" path="res://scripts/player/player.gd" id="1_aj3wt"]
 [ext_resource type="Shader" path="res://shaders/hit_shader.gdshader" id="1_u2i0y"]
@@ -9,12 +9,20 @@
 [ext_resource type="Script" path="res://scripts/player/weapon_holder.gd" id="6_52hcq"]
 [ext_resource type="PackedScene" uid="uid://dqyuvkn24rt4d" path="res://scenes/weapons/weapon.tscn" id="7_h1lr7"]
 [ext_resource type="Script" path="res://scripts/player/interaction_dtection_area.gd" id="9_5q5pa"]
+[ext_resource type="Script" path="res://scripts/entity components/modifier_component.gd" id="11_nmsh4"]
+[ext_resource type="Script" path="res://scripts/entity components/stats_component.gd" id="12_ce67p"]
+[ext_resource type="Script" path="res://scripts/player/player_stats.gd" id="13_b0ohb"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_c038n"]
 shader = ExtResource("1_u2i0y")
 shader_parameter/active = null
 shader_parameter/freq = 25.0
 shader_parameter/flash_color = Color(1, 0, 0, 1)
+
+[sub_resource type="GDScript" id="GDScript_o46he"]
+script/source = "extends Node
+class_name EntityStatsComponent
+"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2ctgj"]
 size = Vector2(48, 46)
@@ -166,12 +174,25 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_ta5md"]
 radius = 156.051
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("interaction_area", "weapon_holder") groups=["player"]]
+[sub_resource type="Resource" id="Resource_g56u3"]
+script = ExtResource("13_b0ohb")
+max_health = 100.0
+speed = 400.0
+luck = 0.0
+dash_mod = 2.0
+dash_cooldown = 1.0
+dash_duration = 0.2
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("stats_comp", "interaction_area", "weapon_holder") groups=["player"]]
 material = SubResource("ShaderMaterial_c038n")
 motion_mode = 1
 script = ExtResource("1_aj3wt")
+stats_comp = NodePath("StatsComponent")
 interaction_area = NodePath("InteractDetectionArea")
 weapon_holder = NodePath("WeaponHolder")
+
+[node name="EntityStatsComponent" type="Node" parent="."]
+script = SubResource("GDScript_o46he")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_2ctgj")
@@ -188,8 +209,9 @@ shape = SubResource("RectangleShape2D_i35ml")
 script = ExtResource("3_q3ky6")
 health_component = NodePath("../HealthComponent")
 
-[node name="HealthComponent" type="Node" parent="."]
+[node name="HealthComponent" type="Node" parent="." node_paths=PackedStringArray("stats_comp")]
 script = ExtResource("4_nda1r")
+stats_comp = NodePath("../StatsComponent")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 use_parent_material = true
@@ -216,10 +238,22 @@ script = ExtResource("9_5q5pa")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="InteractDetectionArea"]
 shape = SubResource("CircleShape2D_ta5md")
 
-[node name="DashTimer" type="Timer" parent="."]
+[node name="Dash" type="Node" parent="."]
+
+[node name="DashTimer" type="Timer" parent="Dash"]
 one_shot = true
 
-[connection signal="hit" from="HurtboxComponent" to="HitHandlerComponent" method="handle_hit"]
+[node name="DashCooldown" type="Timer" parent="Dash"]
+one_shot = true
+
+[node name="ModifierComponent" type="Node" parent="."]
+script = ExtResource("11_nmsh4")
+
+[node name="StatsComponent" type="Node" parent="." node_paths=PackedStringArray("mod")]
+script = ExtResource("12_ce67p")
+stats = SubResource("Resource_g56u3")
+mod = NodePath("../ModifierComponent")
+
 [connection signal="hit_taken" from="HitHandlerComponent" to="AnimationPlayer" method="play" binds= ["hit"]]
 [connection signal="dead" from="HealthComponent" to="AnimationPlayer" method="play" binds= ["die"]]
-[connection signal="timeout" from="DashTimer" to="." method="end_dash"]
+[connection signal="timeout" from="Dash/DashTimer" to="." method="end_dash"]

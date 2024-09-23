@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bfehmhlupl3b6"]
+[gd_scene load_steps=22 format=3 uid="uid://bfehmhlupl3b6"]
 
 [ext_resource type="Script" path="res://scripts/enemies/turret.gd" id="1_7f3v3"]
 [ext_resource type="Script" path="res://scripts/entity components/hurtbox_component.gd" id="1_kkc2u"]
@@ -8,6 +8,8 @@
 [ext_resource type="Script" path="res://scripts/entity components/health_bar_component.gd" id="6_r7cvk"]
 [ext_resource type="AudioStream" uid="uid://ceybf4ry5w258" path="res://audio/sfx/metal-hit-90-200426.mp3" id="7_2qp6n"]
 [ext_resource type="Script" path="res://scripts/audio/pitch_audio_player_2d.gd" id="8_xif1s"]
+[ext_resource type="Script" path="res://scripts/entity components/stats_component.gd" id="9_rtu4d"]
+[ext_resource type="Script" path="res://scripts/player/player_stats.gd" id="10_0qw8k"]
 
 [sub_resource type="Shader" id="Shader_f174b"]
 code = "shader_type canvas_item;
@@ -187,6 +189,15 @@ _data = {
 "death": SubResource("Animation_jor1b")
 }
 
+[sub_resource type="Resource" id="Resource_cc3qw"]
+script = ExtResource("10_0qw8k")
+max_health = 100.0
+speed = 200.0
+luck = 0.0
+dash_mod = 2.0
+dash_cooldown = 1.0
+dash_duration = 0.2
+
 [node name="TurretBase" type="StaticBody2D"]
 material = SubResource("ShaderMaterial_bfril")
 script = ExtResource("1_7f3v3")
@@ -226,8 +237,9 @@ one_shot = true
 script = ExtResource("4_46gxl")
 health_component = NodePath("../HealthComponent")
 
-[node name="HealthComponent" type="Node" parent="."]
+[node name="HealthComponent" type="Node" parent="." node_paths=PackedStringArray("stats_comp")]
 script = ExtResource("5_g3i5k")
+stats_comp = NodePath("../StatsComponent")
 
 [node name="HitAnim" type="AnimationPlayer" parent="."]
 root_node = NodePath("../DeathAnim")
@@ -253,7 +265,10 @@ stream = ExtResource("7_2qp6n")
 pitch_scale = 0.75
 script = ExtResource("8_xif1s")
 
-[connection signal="hit" from="HurtBoxComponent" to="HitHandlerComponent" method="handle_hit"]
+[node name="StatsComponent" type="Node" parent="."]
+script = ExtResource("9_rtu4d")
+stats = SubResource("Resource_cc3qw")
+
 [connection signal="hit_taken" from="HitHandlerComponent" to="AudioStreamPlayer2D" method="play_pitched"]
 [connection signal="hit_taken" from="HitHandlerComponent" to="HitAnim" method="play" binds= ["Hit"]]
 [connection signal="dead" from="HealthComponent" to="DeathAnim" method="play" binds= ["death"]]

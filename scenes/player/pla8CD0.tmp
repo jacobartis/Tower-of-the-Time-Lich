@@ -1,0 +1,258 @@
+[gd_scene load_steps=24 format=3 uid="uid://beenjcjmo5nbm"]
+
+[ext_resource type="Script" path="res://scripts/player/player.gd" id="1_aj3wt"]
+[ext_resource type="Shader" path="res://shaders/hit_shader.gdshader" id="1_u2i0y"]
+[ext_resource type="Script" path="res://scripts/entity components/hurtbox_component.gd" id="2_1q10r"]
+[ext_resource type="Texture2D" uid="uid://dydrn18skchfq" path="res://icon.svg" id="2_bp17w"]
+[ext_resource type="Script" path="res://scripts/entity components/entity_stats_component.gd" id="3_1ldos"]
+[ext_resource type="Script" path="res://scripts/entity components/hit_handler_component.gd" id="3_q3ky6"]
+[ext_resource type="Script" path="res://scripts/entity components/health_component.gd" id="4_nda1r"]
+[ext_resource type="Script" path="res://scripts/player/weapon_holder.gd" id="6_52hcq"]
+[ext_resource type="PackedScene" uid="uid://dqyuvkn24rt4d" path="res://scenes/weapons/weapon.tscn" id="7_h1lr7"]
+[ext_resource type="Script" path="res://scripts/player/interaction_dtection_area.gd" id="9_5q5pa"]
+[ext_resource type="Script" path="res://scripts/entity components/modifier_component.gd" id="11_nmsh4"]
+[ext_resource type="Script" path="res://scripts/entity components/stats_component.gd" id="12_ce67p"]
+[ext_resource type="Script" path="res://scenes/player/epic_mod.gd" id="12_wvevm"]
+[ext_resource type="Script" path="res://scripts/player/player_stats.gd" id="13_b0ohb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_c038n"]
+shader = ExtResource("1_u2i0y")
+shader_parameter/active = null
+shader_parameter/freq = 25.0
+shader_parameter/flash_color = Color(1, 0, 0, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2ctgj"]
+size = Vector2(48, 46)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i35ml"]
+size = Vector2(58, 62)
+
+[sub_resource type="Animation" id="Animation_x5d4x"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [null]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HurtboxComponent/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_kao8e"]
+resource_name = "die"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [false],
+"method": &"set_physics_process"
+}]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HurtboxComponent/CollisionShape2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CollisionShape2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 0, 0, 1), Color(1, 1, 1, 0)]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [false],
+"method": &"set_process"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_bo6fp"]
+resource_name = "hit"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/active")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, null]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_k1s88"]
+_data = {
+"RESET": SubResource("Animation_x5d4x"),
+"die": SubResource("Animation_kao8e"),
+"hit": SubResource("Animation_bo6fp")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ta5md"]
+radius = 156.051
+
+[sub_resource type="Resource" id="Resource_g56u3"]
+script = ExtResource("13_b0ohb")
+max_health = 100.0
+speed = 200.0
+luck = 0.0
+dash_mod = 2.0
+dash_cooldown = 1.0
+dash_duration = 0.2
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("interaction_area", "weapon_holder") groups=["player"]]
+material = SubResource("ShaderMaterial_c038n")
+motion_mode = 1
+script = ExtResource("1_aj3wt")
+interaction_area = NodePath("InteractDetectionArea")
+weapon_holder = NodePath("WeaponHolder")
+
+[node name="EntityStatsComponent" type="Node" parent="."]
+script = ExtResource("3_1ldos")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_2ctgj")
+
+[node name="HurtboxComponent" type="Area2D" parent="."]
+script = ExtResource("2_1q10r")
+player_hitbox = true
+enemy_hitbox = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxComponent"]
+shape = SubResource("RectangleShape2D_i35ml")
+
+[node name="HitHandlerComponent" type="Node" parent="." node_paths=PackedStringArray("health_component")]
+script = ExtResource("3_q3ky6")
+health_component = NodePath("../HealthComponent")
+
+[node name="HealthComponent" type="Node" parent="."]
+script = ExtResource("4_nda1r")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+use_parent_material = true
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_bp17w")
+
+[node name="WeaponHolder" type="Node2D" parent="."]
+script = ExtResource("6_52hcq")
+
+[node name="Weapon" parent="WeaponHolder" instance=ExtResource("7_h1lr7")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_k1s88")
+}
+
+[node name="InteractDetectionArea" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 8
+script = ExtResource("9_5q5pa")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractDetectionArea"]
+shape = SubResource("CircleShape2D_ta5md")
+
+[node name="Dash" type="Node" parent="."]
+
+[node name="DashTimer" type="Timer" parent="Dash"]
+one_shot = true
+
+[node name="DashCooldown" type="Timer" parent="Dash"]
+one_shot = true
+
+[node name="ModifierComponent" type="Node" parent="." node_paths=PackedStringArray("modifiers")]
+script = ExtResource("11_nmsh4")
+modifiers = [NodePath("Node")]
+
+[node name="Node" type="Node" parent="ModifierComponent" groups=["player_mod"]]
+script = ExtResource("12_wvevm")
+
+[node name="StatsComponent" type="Node" parent="." node_paths=PackedStringArray("mod")]
+script = ExtResource("12_ce67p")
+stats = SubResource("Resource_g56u3")
+mod = NodePath("../ModifierComponent")
+
+[connection signal="hit_taken" from="HitHandlerComponent" to="AnimationPlayer" method="play" binds= ["hit"]]
+[connection signal="dead" from="HealthComponent" to="AnimationPlayer" method="play" binds= ["die"]]
+[connection signal="timeout" from="Dash/DashTimer" to="." method="end_dash"]

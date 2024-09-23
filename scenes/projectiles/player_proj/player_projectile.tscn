@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/entity components/hit_box_component.gd" id="2_0xawr"]
 [ext_resource type="Texture2D" uid="uid://dydrn18skchfq" path="res://icon.svg" id="3_85b6w"]
 [ext_resource type="Script" path="res://scripts/attacks/attack_component.gd" id="4_iqyrx"]
-[ext_resource type="Script" path="res://scripts/attacks/attack_info.gd" id="5_rbthv"]
+[ext_resource type="Script" path="res://scripts/attacks/attack_stats.gd" id="5_rbthv"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_miww4"]
 radius = 16.7631

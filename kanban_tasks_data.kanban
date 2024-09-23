@@ -1,0 +1,131 @@
+{
+	"categories": [
+		{
+			"uuid": "57b89f6d-e222-4883-afb8-a028101b37ca",
+			"title": "Task",
+			"color": "70bafa"
+		}
+	],
+	"stages": [
+		{
+			"uuid": "1785dc3d-641d-45a5-abe6-0295a40c65ca",
+			"title": "Todo",
+			"tasks": [
+				"e28cba76-588e-475a-aebc-b51b8afa35a1",
+				"98fe8d11-1e69-43d5-a0cc-45e80cd7e08a",
+				"7ff23ecd-8a2a-49a2-81f0-6af167171fa3",
+				"0e119bbc-815e-4d64-be97-e50ee9448227",
+				"9d5c6741-19d8-4eba-83bb-f78c681ad913"
+			]
+		},
+		{
+			"uuid": "a4494ce3-2a6c-41fa-aa34-a70e25fda50e",
+			"title": "Doing",
+			"tasks": []
+		},
+		{
+			"uuid": "8a81d7c9-d517-4a80-9324-e68a06e43c56",
+			"title": "Done",
+			"tasks": []
+		}
+	],
+	"tasks": [
+		{
+			"uuid": "e28cba76-588e-475a-aebc-b51b8afa35a1",
+			"title": "Rework Timer System",
+			"description": "",
+			"category": "57b89f6d-e222-4883-afb8-a028101b37ca",
+			"steps": [
+				{
+					"details": "Implement Spare Time (Money)",
+					"done": false
+				},
+				{
+					"details": "Seperate Timer From Display",
+					"done": false
+				}
+			]
+		},
+		{
+			"uuid": "98fe8d11-1e69-43d5-a0cc-45e80cd7e08a",
+			"title": "Implement Items",
+			"description": "",
+			"category": "57b89f6d-e222-4883-afb8-a028101b37ca",
+			"steps": [
+				{
+					"details": "Player Inventory",
+					"done": false
+				},
+				{
+					"details": "Clear Definition of Stats",
+					"done": true
+				},
+				{
+					"details": "Create Modifier Class",
+					"done": false
+				}
+			]
+		},
+		{
+			"uuid": "7ff23ecd-8a2a-49a2-81f0-6af167171fa3",
+			"title": "Level Generation",
+			"description": "",
+			"category": "57b89f6d-e222-4883-afb8-a028101b37ca",
+			"steps": [
+				{
+					"details": "Create More Rooms",
+					"done": false
+				},
+				{
+					"details": "Create Script to Create Corridors",
+					"done": false
+				},
+				{
+					"details": "Select Room Types Correctly",
+					"done": false
+				}
+			]
+		},
+		{
+			"uuid": "0e119bbc-815e-4d64-be97-e50ee9448227",
+			"title": "Attacks",
+			"description": "",
+			"category": "57b89f6d-e222-4883-afb8-a028101b37ca",
+			"steps": [
+				{
+					"details": "Clear Stats for an Attack",
+					"done": false
+				},
+				{
+					"details": "Implement Modfier to the Stats",
+					"done": false
+				}
+			]
+		},
+		{
+			"uuid": "9d5c6741-19d8-4eba-83bb-f78c681ad913",
+			"title": "Implement Modifier",
+			"description": "Modifies stats using nodes in the modifier array.\nWill take; Player stats,  Enemy Stats, Weapon Stats, Projectile Stats.\n\nHas multiplyer mods (X 1.0) summed from the stats of the mod nodes.\n",
+			"category": "57b89f6d-e222-4883-afb8-a028101b37ca",
+			"steps": [
+				{
+					"details": "Modify Nodes",
+					"done": false
+				}
+			]
+		}
+	],
+	"layout": {
+		"columns": [
+			[
+				"1785dc3d-641d-45a5-abe6-0295a40c65ca"
+			],
+			[
+				"a4494ce3-2a6c-41fa-aa34-a70e25fda50e"
+			],
+			[
+				"8a81d7c9-d517-4a80-9324-e68a06e43c56"
+			]
+		]
+	}
+}

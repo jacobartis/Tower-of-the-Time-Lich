@@ -1,21 +1,20 @@
 extends CharacterBody2D
 
+@export var stats_comp:StatsComponent
 
-const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
-
-var dash_cooldown:float = .8
-var current_dash_cooldown:float = 0
-var dash_duration: float = .2
-var dash_speed: float = SPEED*5
-
-@onready var dash_timer = $DashTimer
+@onready var dash_timer = $Dash/DashTimer
+@onready var dash_cooldown = $Dash/DashCooldown
 
 @export var interaction_area:InteractionDetectionArea
 @export var weapon_holder:Node2D
 
+
+func _ready():
+	if !stats_comp.stats is PlayerStats: 
+		push_error("Stats not player stats")
+		return
+
 func _process(delta):
-	current_dash_cooldown = max(0,current_dash_cooldown-delta)
 	if !dash_timer.is_stopped():
 		return
 	if Input.is_action_just_pressed("player_interact"):
@@ -34,24 +33,24 @@ func _physics_process(delta):
 	
 	var direction = Input.get_vector("player_left","player_right","player_up","player_down")
 	if direction:
-		velocity = direction * SPEED
+		velocity = direction * stats_comp.get_stats().speed
 	else:
-		velocity = velocity.move_toward(Vector2.ZERO, SPEED)
-	if Input.is_action_just_pressed("player_dash") and current_dash_cooldown==0:
+		velocity = velocity.move_toward(Vector2.ZERO, stats_comp.get_stats().speed)
+	if Input.is_action_just_pressed("player_dash") and dash_cooldown.is_stopped():
 		start_dash()
 	move_and_slide()
 
 func start_dash():
 	$CollisionShape2D.disabled = true
 	$HurtboxComponent/CollisionShape2D.disabled = true
+	var dash_speed = stats_comp.get_stats().speed*stats_comp.get_stats().dash_mod
 	if velocity.normalized():
 		velocity = velocity.normalized()*dash_speed
 	else:
 		velocity = get_last_motion().normalized()*dash_speed
-	dash_timer.start(dash_duration)
+	dash_timer.start(stats_comp.get_stats().dash_duration)
 
 func end_dash():
 	$CollisionShape2D.disabled = false
 	$HurtboxComponent/CollisionShape2D.disabled = false
-	current_dash_cooldown = dash_cooldown
-
+	dash_cooldown.start(stats_comp.get_stats().dash_cooldown)
