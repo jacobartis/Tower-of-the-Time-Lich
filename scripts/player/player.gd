@@ -53,4 +53,4 @@ func start_dash():
 func end_dash():
 	$CollisionShape2D.disabled = false
 	$HurtboxComponent/CollisionShape2D.disabled = false
-	dash_cooldown.start(stats_comp.get_stats().dash_cooldown)
+	dash_cooldown.start(stats_comp.get_statsa().dash_cooldown)

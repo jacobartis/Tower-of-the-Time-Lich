@@ -49,10 +49,9 @@ script = ExtResource("4_vfq5l")
 proj_spawn = NodePath("../ProjSpawn")
 weapon = NodePath("..")
 
-[node name="AttackStatsComponent" type="Node" parent="Attack" node_paths=PackedStringArray("mod")]
+[node name="AttackStatsComponent" type="Node" parent="Attack"]
 script = ExtResource("5_pkyk4")
 stats = SubResource("Resource_iovug")
-mod = NodePath("")
 
 [node name="CantPerform" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_bscbd")

@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var weapon:Weapon:set=set_weapon 
+@onready var weapon:Weapon = $Weapon :set=set_weapon
 @export var mod_comp: ModifierComponent
 
 func set_weapon(new):
